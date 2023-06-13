@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 @app.route('/api/data', methods=['POST'])
 def get_data():
-    data = request.json
+    data = request.json 
     dataJson = {
         "text": data,
         "model_id": "eleven_multilingual_v1",
