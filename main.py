@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 
 # Establecer la clave de la API
+
 load_dotenv()
 
 # Obtener la API key del archivo .env
@@ -17,8 +18,7 @@ app = Flask(__name__)
 
 @app.route('/api/data', methods=['POST'])
 def get_data():
-    data = request.json 
-    print(data)
+    data = request.json
     dataJson = {
         "text": data,
         "model_id": "eleven_multilingual_v1",
@@ -32,7 +32,7 @@ def get_data():
     headers = {
         "Accept": "audio/mpeg",
         "Content-Type": "application/json",
-        "xi-api-key": "0f297a2d26e0b278be6ac8a445f3e985"
+        "xi-api-key": api_key
     }
 
     # Realizar la solicitud a la API
@@ -54,3 +54,7 @@ def get_data():
         return jsonify({'message': 'Error en la solicitud'})
 
     return jsonify({'message': 'Audio generado'})
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
