@@ -18,6 +18,7 @@ app = Flask(__name__)
 @app.route('/api/data', methods=['POST'])
 def get_data():
     data = request.json 
+    print(data)
     dataJson = {
         "text": data,
         "model_id": "eleven_multilingual_v1",
@@ -53,7 +54,3 @@ def get_data():
         return jsonify({'message': 'Error en la solicitud'})
 
     return jsonify({'message': 'Audio generado'})
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
