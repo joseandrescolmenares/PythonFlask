@@ -23,7 +23,7 @@ def get_data():
     headers = {
         "Accept": "audio/mpeg",
         "Content-Type": "application/json",
-        "xi-api-key": "0f297a2d26e0b278be6ac8a445f3e985"
+        "xi-api-key": "API_KEY"
     }
 
     # Realizar la solicitud a la API
