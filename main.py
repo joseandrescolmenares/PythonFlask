@@ -1,18 +1,10 @@
 from flask import Flask, jsonify, request
 import requests
-from elevenlabs import generate, play
-from elevenlabs import set_api_key
+from elevenlabs import generate
+from io import BytesIO
+from pydub import AudioSegment
+import simpleaudio as sa
 
-import os
-
-# Establecer la clave de la API
-
-
-
-# Obtener la API key del archivo .env
-
-
-# Establecer la clave de la API
 app = Flask(__name__)
 
 @app.route('/api/data', methods=['POST'])
@@ -39,21 +31,22 @@ def get_data():
 
     # Verificar el código de respuesta de la solicitud
     if response.status_code == 200:
-        # Guardar el audio en un archivo
-        with open('output.mp3', 'wb') as f:
-            f.write(response.content)
+        # Leer el contenido de la respuesta como bytes
+        audio_bytes = BytesIO(response.content)
 
-        # Leer el contenido del archivo como bytes
-        with open('output.mp3', 'rb') as f:
-            audio = f.read()
+        # Convertir los bytes de audio a objeto de AudioSegment de pydub
+        audio_segment = AudioSegment.from_file(audio_bytes, format="mp3")
 
-        # Reproducir el audio
-        play(audio)
+        # Convertir el objeto AudioSegment a bytes
+        audio_data = audio_segment.export(format="wav").read()
+
+        # Reproducir el audio utilizando simpleaudio
+        play_obj = sa.play_buffer(audio_data, num_channels=2, bytes_per_sample=2, sample_rate=44100)
+        play_obj.wait_done()
     else:
         return jsonify({'message': 'Error en la solicitud'})
 
     return jsonify({'message': 'Audio generado'})
-
 
 if __name__ == '__main__':
     app.run(debug=True)
